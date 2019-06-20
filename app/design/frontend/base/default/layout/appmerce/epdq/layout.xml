@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Appmerce - Applications for Ecommerce
+* http://www.appmerce.com
+*
+* @extension   Barclaycard ePDQ
+* @type        Payment method
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+*
+* @category    Magento Commerce
+* @package     Appmerce_Epdq
+* @copyright   Copyright (c) 2011-2014 Appmerce (http://www.appmerce.com)
+* @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addJs">
+                <script>appmerce/epdq/validation.js</script>
+            </action>
+        </reference>
+    </default>
+    <epdq_api_payment>
+        <remove name="right"/>
+        <remove name="left"/>
+        <remove name="catalog.topnav"/>
+        <reference name="header">
+            <remove name="top.links"/>
+            <remove name="top.search"/>
+            <remove name="store_language"/>
+            <remove name="top.container"/>
+        </reference>
+        <reference name="footer">
+            <remove name="cms_footer_links"/>
+            <remove name="footer_links"/>
+            <remove name="store_switcher"/>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="epdq/payment" name="epdq_payment" template="appmerce/epdq/payment.phtml"/>
+        </reference>
+    </epdq_api_payment>
+    <epdq_api_placement>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/empty.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="epdq/placement" name="epdq_placement" template="appmerce/epdq/placement.phtml"/>
+        </reference>
+    </epdq_api_placement>
+</layout>

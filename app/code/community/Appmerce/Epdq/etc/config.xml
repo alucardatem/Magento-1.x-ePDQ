@@ -1,0 +1,567 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Appmerce - Applications for Ecommerce
+* http://www.appmerce.com
+*
+* @extension   Barclaycard ePDQ
+* @type        Payment method
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+*
+* @category    Magento Commerce
+* @package     Appmerce_Epdq
+* @copyright   Copyright (c) 2011-2014 Appmerce (http://www.appmerce.com)
+* @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<config>
+    <modules>
+        <Appmerce_Epdq>
+            <version>2.0.0</version>
+        </Appmerce_Epdq>
+    </modules>
+    <global>
+        <models>
+            <epdq>
+                <class>Appmerce_Epdq_Model</class>
+                <resourceModel>epdq_mysql4</resourceModel>
+            </epdq>
+            <epdq_mysql4>
+                <class>Appmerce_Epdq_Model_Mysql4</class>
+                <entities>
+                    <api_debug>
+                        <table>epdq_api_debug</table>
+                    </api_debug>
+                </entities>
+            </epdq_mysql4>
+        </models>
+        <helpers>
+            <epdq>
+                <class>Appmerce_Epdq_Helper</class>
+            </epdq>
+        </helpers>
+        <resources>
+            <epdq_setup>
+                <setup>
+                    <module>Appmerce_Epdq</module>
+                    <class>Appmerce_Epdq_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </epdq_setup>
+            <epdq_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </epdq_write>
+            <epdq_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </epdq_read>
+        </resources>
+        <blocks>
+            <epdq>
+                <class>Appmerce_Epdq_Block</class>
+            </epdq>
+        </blocks>
+        <payment>
+            <cc>
+                <types>
+                    <EPDQ_TXCB translate="name">
+                        <code>EPDQ_TXCB</code>
+                        <name>3XCB</name>
+                        <order>62</order>
+                    </EPDQ_TXCB>
+                    <EPDQ_AIRPLUS translate="name">
+                        <code>EPDQ_AIRPLUS</code>
+                        <name>AIRPLUS</name>
+                        <order>62</order>
+                    </EPDQ_AIRPLUS>
+                    <EPDQ_AURORA translate="name">
+                        <code>EPDQ_AURORA</code>
+                        <name>Aurora</name>
+                        <order>62</order>
+                    </EPDQ_AURORA>
+                    <EPDQ_AURORE translate="name">
+                        <code>EPDQ_AURORE</code>
+                        <name>Aurore</name>
+                        <order>62</order>
+                    </EPDQ_AURORE>
+                    <EPDQ_BILLY translate="name">
+                        <code>EPDQ_BILLY</code>
+                        <name>Billy</name>
+                        <order>62</order>
+                    </EPDQ_BILLY>
+                    <EPDQ_CB translate="name">
+                        <code>EPDQ_CB</code>
+                        <name>Carte Bleue</name>
+                        <order>62</order>
+                    </EPDQ_CB>
+                    <EPDQ_COFINOGA translate="name">
+                        <code>EPDQ_COFINOGA</code>
+                        <name>Cofinoga</name>
+                        <order>62</order>
+                    </EPDQ_COFINOGA>
+                    <EPDQ_DANKORT translate="name">
+                        <code>EPDQ_DANKORT</code>
+                        <name>Dankort</name>
+                        <order>62</order>
+                    </EPDQ_DANKORT>
+                    <EPDQ_DINERSCLUB translate="name">
+                        <code>EPDQ_DINERSCLUB</code>
+                        <name>Diners Club</name>
+                        <order>62</order>
+                    </EPDQ_DINERSCLUB>
+                    <EPDQ_LASER translate="name">
+                        <code>EPDQ_LASER</code>
+                        <name>Laser</name>
+                        <order>62</order>
+                    </EPDQ_LASER>
+                    <EPDQ_MAESTROUK translate="name">
+                        <code>EPDQ_MAESTROUK</code>
+                        <name>MaestroUK</name>
+                        <order>62</order>
+                    </EPDQ_MAESTROUK>
+                    <EPDQ_UATP translate="name">
+                        <code>EPDQ_UATP</code>
+                        <name>UATP</name>
+                        <order>62</order>
+                    </EPDQ_UATP>
+                </types>
+            </cc>
+        </payment>
+    </global>
+    <frontend>
+        <translate>
+            <modules>
+                <Appmerce_Epdq>
+                    <files>
+                        <default>Appmerce_Epdq.csv</default>
+                    </files>
+                </Appmerce_Epdq>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <epdq>
+                    <file>appmerce/epdq/layout.xml</file>
+                </epdq>
+            </updates>
+        </layout>
+        <secure_url>
+            <epdq_api>/epdq/api</epdq_api>
+            <epdq_push>/epdq/push</epdq_push>
+        </secure_url>
+        <routers>
+            <epdq>
+                <use>standard</use>
+                <args>
+                    <module>Appmerce_Epdq</module>
+                    <frontName>epdq</frontName>
+                </args>
+            </epdq>
+        </routers>
+        <events>
+            <sales_convert_quote_payment_to_order_payment>
+                <observers>
+                    <epdq_observer>
+                        <type>singleton</type>
+                        <class>epdq/observer</class>
+                        <method>convertPayment</method>
+                    </epdq_observer>
+                </observers>
+            </sales_convert_quote_payment_to_order_payment>
+            <sales_model_service_quote_submit_after>
+                <observers>
+                    <epdq_observer>
+                        <type>singleton</type>
+                        <class>epdq/observer_submit</class>
+                        <method>sales_model_service_quote_submit_after</method>
+                    </epdq_observer>
+                </observers>
+            </sales_model_service_quote_submit_after>
+        </events>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Appmerce_Epdq>
+                    <files>
+                        <default>Appmerce_Epdq.csv</default>
+                    </files>
+                </Appmerce_Epdq>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <payment_services translate="title" module="payment">
+                                            <title>Payment Services</title>
+                                        </payment_services>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <sales_order_invoice_save_before>
+                <observers>
+                    <epdq_observer>
+                        <type>singleton</type>
+                        <class>epdq/observer_invoice</class>
+                        <method>sales_order_invoice_save_before</method>
+                    </epdq_observer>
+                </observers>
+            </sales_order_invoice_save_before>
+            <sales_order_creditmemo_save_before>
+                <observers>
+                    <epdq_observer>
+                        <type>singleton</type>
+                        <class>epdq/observer_invoice</class>
+                        <method>sales_order_creditmemo_save_before</method>
+                    </epdq_observer>
+                </observers>
+            </sales_order_creditmemo_save_before>
+        </events>
+    </adminhtml>
+    <default>
+        <payment>
+            <epdq_cc>
+                <model>epdq/api_cc</model>
+                <title>Barclaycard ePDQ - Credit Cards</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_cc>
+            <epdq_ccdirect>
+                <model>epdq/api_ccdirect</model>
+                <cctypes>MC,VI</cctypes>
+                <payment_action>authorize</payment_action>
+                <title>Barclaycard ePDQ - Credit Cards (DirectLink)</title>
+                <allowspecific>0</allowspecific>
+                <order_status>processing</order_status>
+                <api_passwd backend_model="adminhtml/system_config_backend_encrypted"/>
+                <sha_in backend_model="adminhtml/system_config_backend_encrypted"/>
+            </epdq_ccdirect>
+            <epdq_bcmc>
+                <model>epdq/api_bcmc</model>
+                <title>Barclaycard ePDQ - Credit Cards: Exceptions - Bancontact/Mister Cash</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_bcmc>
+            <epdq_maestro>
+                <model>epdq/api_maestro</model>
+                <title>Barclaycard ePDQ - Credit Cards: Exceptions - Maestro</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_maestro>
+            <epdq_postfinancecard>
+                <model>epdq/api_postfinancecard</model>
+                <title>Barclaycard ePDQ - Credit Cards: Exceptions - PostFinance Card</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_postfinancecard>
+            <epdq_netreserve>
+                <model>epdq/api_netreserve</model>
+                <title>Barclaycard ePDQ - Credit Cards: Online Credit - NetReserve</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_netreserve>
+            <epdq_privilege>
+                <model>epdq/api_privilege</model>
+                <title>Barclaycard ePDQ - Credit Cards: Online Credit - PRIVILEGE</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_privilege>
+            <epdq_uneurocom>
+                <model>epdq/api_uneurocom</model>
+                <title>Barclaycard ePDQ - Credit Cards: Online Credit - UNEUROCOM</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_uneurocom>
+            <epdq_amazoncheckout>
+                <model>epdq/api_amazoncheckout</model>
+                <title>Barclaycard ePDQ - Web Banking - Amazon Checkout</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_amazoncheckout>
+            <epdq_cashticket>
+                <model>epdq/api_cashticket</model>
+                <title>Barclaycard ePDQ - Web Banking - cashticket</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_cashticket>
+            <epdq_cbconline>
+                <model>epdq/api_cbconline</model>
+                <title>Barclaycard ePDQ - Web Banking - CBC Online</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_cbconline>
+            <epdq_centeaonline>
+                <model>epdq/api_centeaonline</model>
+                <title>Barclaycard ePDQ - Web Banking - CENTEA Online</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_centeaonline>
+            <epdq_dexiadirectnet>
+                <model>epdq/api_dexiadirectnet</model>
+                <title>Barclaycard ePDQ - Web Banking - Dexia Direct Net</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_dexiadirectnet>
+            <epdq_sofortueberweisung>
+                <model>epdq/api_sofortueberweisung</model>
+                <title>Barclaycard ePDQ - Web Banking - Sofort Überweisung</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_sofortueberweisung>
+            <epdq_edankort>
+                <model>epdq/api_edankort</model>
+                <title>Barclaycard ePDQ - Web Banking - eDankort</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_edankort>
+            <epdq_eps>
+                <model>epdq/api_eps</model>
+                <title>Barclaycard ePDQ - Web Banking - EPS</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_eps>
+            <epdq_fidorpay>
+                <model>epdq/api_fidorpay</model>
+                <title>Barclaycard ePDQ - Web Banking - FidorPay</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_fidorpay>
+            <epdq_fortispaybutton>
+                <model>epdq/api_fortispaybutton</model>
+                <title>Barclaycard ePDQ - Web Banking - Fortis Pay Button</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_fortispaybutton>
+            <epdq_giropay>
+                <model>epdq/api_giropay</model>
+                <title>Barclaycard ePDQ - Web Banking - giropay</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_giropay>
+            <epdq_ideal>
+                <model>epdq/api_ideal</model>
+                <title>Barclaycard ePDQ - Web Banking - iDEAL</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_ideal>
+            <epdq_inghomepay>
+                <model>epdq/api_inghomepay</model>
+                <title>Barclaycard ePDQ - Web Banking - ING HomePay</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_inghomepay>
+            <epdq_kbconline>
+                <model>epdq/api_kbconline</model>
+                <title>Barclaycard ePDQ - Web Banking - KBC Online</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_kbconline>
+            <epdq_mpass>
+                <model>epdq/api_mpass</model>
+                <title>Barclaycard ePDQ - Web Banking - MPASS</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_mpass>
+            <epdq_paysafecard>
+                <model>epdq/api_paysafecard</model>
+                <title>Barclaycard ePDQ - Web Banking - paysafecard</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_paysafecard>
+            <epdq_postfinanceefinance>
+                <model>epdq/api_postfinanceefinance</model>
+                <title>Barclaycard ePDQ - Web Banking - PostFinance e-finance</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_postfinanceefinance>
+            <epdq_directdebits>
+                <model>epdq/api_directdebits</model>
+                <title>Barclaycard ePDQ - Direct Debits - Direct Debits</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_directdebits>
+            <epdq_acceptgiro>
+                <model>epdq/api_acceptgiro</model>
+                <title>Barclaycard ePDQ - Offline Payment - Acceptgiro</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_acceptgiro>
+            <epdq_banktransfer>
+                <model>epdq/api_banktransfer</model>
+                <title>Barclaycard ePDQ - Offline Payment - Bank Transfer</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_banktransfer>
+            <epdq_installments>
+                <model>epdq/api_installments</model>
+                <title>Barclaycard ePDQ - Offline Payment - Installments</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_installments>
+            <epdq_openinvoice>
+                <model>epdq/api_openinvoice</model>
+                <title>Barclaycard ePDQ - Offline Payment - Open Invoice</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_openinvoice>
+            <epdq_paymentondelivery>
+                <model>epdq/api_paymentondelivery</model>
+                <title>Barclaycard ePDQ - Offline Payment - Payment On Delivery</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_paymentondelivery>
+            <epdq_intersolve>
+                <model>epdq/api_intersolve</model>
+                <title>Barclaycard ePDQ - Gift Cards - InterSolve</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_intersolve>
+            <epdq_minitix>
+                <model>epdq/api_minitix</model>
+                <title>Barclaycard ePDQ - Micro - MiniTix</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_minitix>
+            <epdq_pingping>
+                <model>epdq/api_pingping</model>
+                <title>Barclaycard ePDQ - Mobile - PingPing</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_pingping>
+            <epdq_tunz>
+                <model>epdq/api_tunz</model>
+                <title>Barclaycard ePDQ - Mobile - TUNZ</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_tunz>
+            <epdq_cashu>
+                <model>epdq/api_cashu</model>
+                <title>Barclaycard ePDQ - Others - cashU</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_cashu>
+            <epdq_payble>
+                <model>epdq/api_payble</model>
+                <title>Barclaycard ePDQ - Others - Payble</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_payble>
+            <epdq_paypal>
+                <model>epdq/api_paypal</model>
+                <title>Barclaycard ePDQ - Others - PayPal</title>
+                <allowspecific>0</allowspecific>
+                <order_status>pending</order_status>
+                <pending_status>pending_payment</pending_status>
+                <processing_status>processing</processing_status>
+            </epdq_paypal>
+        </payment>
+        <payment_services>
+            <appmerce_epdq>
+                <sha_in backend_model="adminhtml/system_config_backend_encrypted"/>
+                <sha_out backend_model="adminhtml/system_config_backend_encrypted"/>
+                <operation>SAL</operation>
+                <signature_method>2</signature_method>
+                <order_email>1</order_email>
+                <invoice_create>0</invoice_create>
+                <invoice_email>0</invoice_email>
+                <base_currency>1</base_currency>
+                <hash_algorithm>sha1</hash_algorithm>
+                <template>magento</template>
+            </appmerce_epdq>
+        </payment_services>
+    </default>
+</config>
